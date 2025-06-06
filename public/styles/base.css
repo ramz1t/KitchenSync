@@ -116,6 +116,11 @@ input:focus {
     padding: 5px;
 }
 
+.error-message::selection {
+	background: red;
+	color: white;
+}
+
 footer {
     margin-top: auto !important;
     padding: 5px;
