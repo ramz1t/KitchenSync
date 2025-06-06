@@ -1,0 +1,132 @@
+* {
+  font-family: "VT323", monospace !important;
+  font-weight: 400;
+  font-style: normal;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+h1, h2, h3 {
+    background: white;
+    color: black;
+    width: fit-content;
+}
+
+h1 {
+    margin-bottom: 15px;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+h3 {
+    margin-bottom: 5px;
+}
+
+p {
+    font-size: 1.2rem;
+}
+
+body {
+  	background-color: #000;
+  	color: #fff;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+  	max-width: 800px;
+  	margin: 0 auto;
+	padding: 30px;
+  	border-left: 1px solid #fff;
+  	border-right: 1px solid #fff;
+	min-height: 100dvh;
+}
+
+.input-group {
+    display: grid;
+}
+
+.button-group {
+    display: flex;
+    gap: 5px;
+}
+
+.input-group label {
+    background: #000;
+    padding: 1px;
+    translate: 3px 5px;
+    width: fit-content;
+}
+
+input[type="text"], input[type="email"], input[type="password"], textarea {
+    border: 1px solid #fff;
+    padding: 3px;
+    background-color: #000;
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+button {
+    background-color: #000;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 5px 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+[data-role="destructive"] {
+    border: 1px solid red;
+    color: red;
+}
+
+button:hover {
+    background-color: #222222;
+}
+
+input:focus {
+    outline: none;
+}
+
+::selection {
+    background: white;
+    color: black;
+}
+
+.error-message {
+    border: 1px solid red;
+    color: red;
+    width: fit-content;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+footer {
+    margin-top: auto !important;
+    padding: 5px;
+    text-align: center;
+}
+
+footer > a {
+    color: #fff;
+    text-decoration: wavy underline;
+}
+
+.heart {
+    color: red;
+}

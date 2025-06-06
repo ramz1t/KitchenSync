@@ -1,0 +1,19 @@
+.categories {
+  display: flex;
+  gap: 15px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin-top: 16px;
+}
+
+.categories > a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.5rem;
+  border-left: 1px solid #ffffff;
+  border-right: 1px solid #ffffff;
+  padding: 7px 15px;
+  text-align: center;
+  text-decoration: wavy underline;
+  text-underline-offset: 5px;
+}
