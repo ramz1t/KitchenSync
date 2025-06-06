@@ -37,13 +37,13 @@ class RestaurantController
 
         if ($action === 'create') {
             $restaurantId = RestaurantModel::createRestaurant($this->pdo, $name, $pass);
-            setcookie('restaurant_id', $restaurantId, time() + 3600, '/');
+            createSignedCookie('restaurant_cookie', $restaurantId);
             header('Location: /restaurant');
             exit;
         } elseif ($action === 'find') {
             $restaurantId = RestaurantModel::loginRestaurant($this->pdo, $name, $pass);
             if ($restaurantId !== null) {
-                setcookie('restaurant_id', $restaurantId, time() + 3600, '/', httponly: true);
+                createSignedCookie('restaurant_id', $restaurantId);
                 header('Location: /restaurant');
                 exit;
             } else {
