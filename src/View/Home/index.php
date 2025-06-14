@@ -25,7 +25,7 @@
             </p>
         </div>
         <h2>Please find your restaurant or register a new one to continue</h2>
-        <form action="/restaurant" method="post" class="restaurant-form">
+        <form action="/restaurant" method="post" class="bordered-form">
             <div class="input-group">
                 <label for="restaurant-name">Restaurant name</label>
                 <input type="text" id="restaurant-name" name="name" required>
@@ -54,6 +54,12 @@
                         break;
                     case 'invalid_action':
                         echo 'Invalid action. Please try again.';
+                        break;
+                    case 'duplicate_name':
+                        echo 'A restaurant with this name already exists. Please choose a different name.';
+                        break;
+                    case 'creation_failed':
+                        echo 'Failed to create the restaurant. Please try again later.';
                         break;
                     default:
                         echo 'An unknown error occurred.';

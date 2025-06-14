@@ -19,6 +19,12 @@ class RestaurantController
 
         $restaurant = requireRestaurant($this->pdo);
         $restaurantName = $restaurant['name'];
+
+        $breadcrumbs = [
+            ['Home', '/'],
+            ['Restaurant', ''],
+        ];
+
         require __DIR__ . '/../View/Restaurant/index.php';
     }
 
@@ -29,39 +35,53 @@ class RestaurantController
         $pass = $_POST['pass'] ?? '';
 
         if (empty($name) || empty($pass)) {
-            header('Location: /?error=empty_fields');
-            exit;
+            $this->redirectWithError('empty_fields');
         }
 
         require_once __DIR__ . '/../Model/RestaurantModel.php';
 
-        if ($action === 'create') {
-            $restaurantId = RestaurantModel::createRestaurant($this->pdo, $name, $pass);
-            createSignedCookie('restaurant_cookie', $restaurantId);
-            header('Location: /restaurant');
-            exit;
-        } elseif ($action === 'find') {
-            $restaurantId = RestaurantModel::loginRestaurant($this->pdo, $name, $pass);
-            if ($restaurantId !== null) {
-                createSignedCookie('restaurant_id', $restaurantId);
-                header('Location: /restaurant');
-                exit;
+        try {
+            $restaurantId = $this->processRestaurantAction($action, $name, $pass);
+            $this->handleSuccess($restaurantId);
+        } catch (PDOException $e) {
+            if ($e->errorInfo[1] == 1062) {
+                $this->redirectWithError('duplicate_name');
             } else {
-                header('Location: /?error=invalid');
-                exit;
+                $this->redirectWithError('creation_failed');
             }
-        } else {
-            header('Location: /?error=invalid_action');
-            exit;
+        } catch (Exception $e) {
+            $this->redirectWithError($e->getMessage());
         }
     }
 
-    public function logout()
+    private function processRestaurantAction($action, $name, $pass)
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            setcookie('restaurant_id', '', time() - 3600, '/');
+        switch ($action) {
+            case 'create':
+                return RestaurantModel::createRestaurant($this->pdo, $name, $pass);
+            case 'find':
+                $restaurantId = RestaurantModel::loginRestaurant($this->pdo, $name, $pass);
+                if ($restaurantId === null) {
+                    throw new Exception('invalid');
+                }
+                return $restaurantId;
+            default:
+                throw new Exception('invalid_action');
         }
-        header('Location: /');
+    }
+
+    private function handleSuccess($restaurantId)
+    {
+        createSignedCookie('restaurant_pk', $restaurantId);
+        $redirectUrl = $_GET['redirect'] ?? '/restaurant';
+        header('Location: ' . $redirectUrl);
         exit;
     }
+
+    private function redirectWithError($error)
+    {
+        header('Location: /?error=' . $error);
+        exit;
+    }
+
 }
