@@ -13,21 +13,21 @@ class RestaurantModel
 
     public static function loginRestaurant(PDO $pdo, string $name, string $password): ?int
     {
-        $stmt = $pdo->prepare('SELECT id, password FROM restaurants WHERE name = :name');
+        $stmt = $pdo->prepare('SELECT pk, password FROM restaurants WHERE name = :name');
         $stmt->execute([':name' => $name]);
         $restaurant = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($restaurant && password_verify($password, $restaurant['password'])) {
-            return (int) $restaurant['id'];
+            return (int) $restaurant['pk'];
         }
 
         return null;
     }
 
-    public static function getRestaurantById(PDO $pdo, int $id): ?array
+    public static function getRestaurantById(PDO $pdo, int $pk): ?array
     {
-        $stmt = $pdo->prepare('SELECT * FROM restaurants WHERE id = :id');
-        $stmt->execute([':id' => $id]);
+        $stmt = $pdo->prepare('SELECT * FROM restaurants WHERE pk = :pk');
+        $stmt->execute([':pk' => $pk]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 }
