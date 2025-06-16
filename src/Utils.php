@@ -3,14 +3,14 @@ loadEnv(__DIR__ . '/../.env');
 
 function requireRestaurant(PDO $pdo): array
 {
-    $restaurantCookie = verifySignedCookie('restaurant_id');
+    $restaurantCookie = verifySignedCookie('restaurant_pk');
     if (isset($restaurantCookie)) {
         $restaurant = RestaurantModel::getRestaurantById($pdo, (int) $restaurantCookie);
         if ($restaurant) {
             return $restaurant;
         }
     }
-    header('Location: /?error=session_expired');
+    header('Location: /?error=session_expired&redirect=' . urlencode($_SERVER['REQUEST_URI']));
     exit;
 }
 
@@ -18,7 +18,7 @@ function createSignedCookie(string $name, string $value)
 {
     $signature = hash_hmac('sha256', $value, $_ENV['SECRET'] ?? 'default_secret');
     $signedValue = base64_encode($value . '|' . $signature);
-    setcookie($name, $signedValue, time() + 3600, '/', httponly: true, secure: true);
+    setcookie($name, $signedValue, time() + 3600000, '/');
 }
 
 function verifySignedCookie(string $name): ?string
