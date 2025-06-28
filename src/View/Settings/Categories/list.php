@@ -5,7 +5,6 @@
     <?php require __DIR__ . '/../../Components/header.php'; ?>
     <title><?= htmlspecialchars($restaurant['name']) ?> | Categories --</title>
     <link rel="stylesheet" href="/styles/settings.css">
-    <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 

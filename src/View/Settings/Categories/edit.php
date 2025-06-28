@@ -3,9 +3,8 @@
 
 <head>
     <?php require __DIR__ . '/../../Components/header.php'; ?>
-    <title>Edit</title>
+    <title>Edit category | KitchenSync</title>
     <link rel="stylesheet" href="/styles/settings.css">
-    <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -29,28 +28,6 @@
             </div>
         </form>
     </div>
-
-    <script>
-        $(document).ready(function () {
-            $('.delete-category').click(function () {
-                var categoryPk = $(this).data('pk');
-                var categoryName = $(this).data('name');
-
-                if (confirm(`Are you sure you want to delete this category (${categoryName})?`)) {
-                    $.post({
-                        url: '/restaurant/settings/categories',
-                        data: { pk: categoryPk, action: 'delete' },
-                        success: function (response) {
-                            window.location.reload();
-                        },
-                        error: function (xhr, status, error) {
-                            alert('Error deleting category: ' + xhr.responseText);
-                        }
-                    });
-                }
-            });
-        });
-    </script>
 </body>
 
 </html>

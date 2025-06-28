@@ -32,3 +32,8 @@
 .category-item > p {
     margin-right: auto;
 }
+
+.restaurant-settings > h2 {
+  margin-top: 16px;
+  margin-bottom: 5px;
+}
