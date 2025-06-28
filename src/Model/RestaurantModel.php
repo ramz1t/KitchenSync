@@ -30,4 +30,22 @@ class RestaurantModel
         $stmt->execute([':pk' => $pk]);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
     }
+
+    public static function updateRestaurantById(PDO $pdo, int $pk, string $name, string $currency): bool
+    {
+        $stmt = $pdo->prepare('UPDATE restaurants SET name=:name, currency=:currency WHERE pk=:pk');
+        return $stmt->execute([':pk' => $pk, ':name' => $name, ':currency' => $currency]);
+    }
+
+    public static function deleteRestaurant(PDO $pdo, int $pk): bool
+    {
+        $stmt = $pdo->prepare('DELETE FROM restaurants WHERE pk=:pk');
+        return $stmt->execute([':pk' => $pk]);
+    }
+
+    public static function changePassword(PDO $pdo, int $pk, string $password): bool
+    {
+        $stmt = $pdo->prepare('UPDATE restaurants SET password=:password WHERE pk=:pk');
+        return $stmt->execute([':pk' => $pk, ':password' => $password]);
+    }
 }

@@ -84,4 +84,79 @@ class RestaurantController
         exit;
     }
 
+    public function settings()
+    {
+        $restaurant = requireRestaurant($this->pdo);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->handleSettingsPost($restaurant['pk']);
+            $restaurant = requireRestaurant($this->pdo);
+        }
+
+        $breadcrumbs = [
+            ['Home', '/'],
+            ['Restaurant', '/restaurant'],
+            ['Settings', '/restaurant/settings'],
+            ['Edit restaurant', ''],
+        ];
+
+        require __DIR__ . '/../View/Settings/Restaurant/edit.php';
+    }
+
+    private function handleSettingsPost($restaurantPk)
+    {
+        require_once __DIR__ . '/../Model/RestaurantModel.php';
+        require_once __DIR__ . '/../Utils.php';
+
+        $restaurant = requireRestaurant($this->pdo);
+        $action = $_POST['action'] ?? '';
+
+        switch ($action) {
+            case 'update':
+                $this->updateRestaurant($restaurant);
+                break;
+            case 'change-password':
+                $this->changePassword($restaurant);
+                break;
+            case 'delete':
+                $this->deleteRestaurant($restaurant);
+                break;
+            default:
+                http_response_code(400);
+                exit("Invalid action - \"" . $action . "\"");
+        }
+    }
+
+    private function updateRestaurant($restaurant)
+    {
+        $name = trim($_POST['name'] ?? '');
+        $currency = trim($_POST['currency'] ?? '');
+
+        if (empty($name) || empty($currency)) {
+            http_response_code(400);
+            exit('Fields can\'t be empty');
+        }
+
+        RestaurantModel::updateRestaurantById($this->pdo, $restaurant['pk'], $name, $currency);
+    }
+
+    private function changePassword($restaurant)
+    {
+    }
+
+    private function deleteRestaurant($restaurant)
+    {
+        $pass = $_POST['password'] ?? "";
+        if (!password_verify($pass, $restaurant['password'])) {
+            http_response_code(403);
+            header('Location: ?error=wrong-pass');
+            exit;
+        }
+
+        // RestaurantModel::deleteRestaurant($this->pdo, $restaurant['pk']);
+
+        setcookie("restaurant_pk", null);
+        header('Location: /?success=deleted');
+        exit;
+    }
 }

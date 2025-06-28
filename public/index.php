@@ -13,8 +13,11 @@ $router = new Router($pdo);
 $router->add('/', HomeController::class, 'index');
 $router->add('/restaurant', RestaurantController::class, 'index');
 $router->add('/restaurant/settings', SettingsController::class, 'index');
+
 $router->add('/restaurant/settings/categories', CategoryController::class, 'index');
 $router->add('/restaurant/settings/categories/edit', CategoryController::class, 'edit');
+
+$router->add('/restaurant/settings/restaurant', RestaurantController::class, 'settings');
 
 // /restaurant/settings/addons
 // /restaurant/settings/addons/edit?id=1
