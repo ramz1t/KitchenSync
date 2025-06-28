@@ -3,21 +3,17 @@
 
 <head>
     <?php require __DIR__ . '/../Components/header.php'; ?>
-    <title>Order | <?= htmlspecialchars($restaurantName) ?></title>
+    <title>Order | <?= htmlspecialchars($restaurant['name']) ?></title>
     <link rel="stylesheet" href="/styles/order.css">
 </head>
 
 <body>
     <div class="container">
-        <h1>-- Welcome to <?= htmlspecialchars($restaurantName) ?>! --</h1>
-        <ul class="categories">
-            <a href="">Burgers</a>
-            <a href="">Pizzas</a>
-            <a href="">Salads</a>
-            <a href="">Drinks</a>
-            <a href="">Desserts</a>
-        </ul>
+        <h1>-- Welcome to <?= htmlspecialchars($restaurant['name']) ?>! --</h1>
+        <?php require __DIR__ . '/../Components/category_menu.php'; ?>
+        <?php require __DIR__ . '/menu_items.php'; ?>
         <?php require __DIR__ . '/../Components/footer.php'; ?>
+        <a href="/restaurant" class="back-link">Back to Restaurant Settings</a>
     </div>
 </body>
 
