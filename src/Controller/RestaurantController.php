@@ -142,21 +142,43 @@ class RestaurantController
 
     private function changePassword($restaurant)
     {
+        $old_password = $_POST['oldPassword'] ?? '';
+        $new_password = $_POST['newPassword'] ?? '';
+
+        if (empty($new_password)) {
+            http_response_code(400);
+            exit('New password can\'t be empty');
+        }
+
+        $this->raiseWrongPasswordError($old_password, $restaurant['password']);
+
+        $new_hash = password_hash($new_password, PASSWORD_DEFAULT);
+
+        RestaurantModel::changePassword($this->pdo, $restaurant['pk'], $new_hash);
+
+        header('Location: ?success=password-changed');
+        exit;
     }
 
     private function deleteRestaurant($restaurant)
     {
         $pass = $_POST['password'] ?? "";
-        if (!password_verify($pass, $restaurant['password'])) {
-            http_response_code(403);
-            header('Location: ?error=wrong-pass');
-            exit;
-        }
+
+        $this->raiseWrongPasswordError($pass, $restaurant['password']);
 
         // RestaurantModel::deleteRestaurant($this->pdo, $restaurant['pk']);
 
         setcookie("restaurant_pk", null);
         header('Location: /?success=deleted');
         exit;
+    }
+
+    private function raiseWrongPasswordError($password, $hash)
+    {
+        if (!password_verify($password, $hash)) {
+            http_response_code(403);
+            header('Location: ?error=wrong-pass');
+            exit;
+        }
     }
 }

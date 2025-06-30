@@ -39,34 +39,8 @@
                 <button type="submit" name="action" value="create">Create</button>
             </div>
         </form>
-        <?php if (isset($_GET['error'])): ?>
-            <div class="error-message">
-                <?php
-                switch ($_GET['error']) {
-                    case 'session_expired':
-                        echo 'Your session has expired. Please log in again.';
-                        break;
-                    case 'invalid':
-                        echo 'Invalid restaurant name or password.';
-                        break;
-                    case 'empty_fields':
-                        echo 'Please fill in all fields.';
-                        break;
-                    case 'invalid_action':
-                        echo 'Invalid action. Please try again.';
-                        break;
-                    case 'duplicate_name':
-                        echo 'A restaurant with this name already exists. Please choose a different name.';
-                        break;
-                    case 'creation_failed':
-                        echo 'Failed to create the restaurant. Please try again later.';
-                        break;
-                    default:
-                        echo 'An unknown error occurred.';
-                }
-                ?>
-            </div>
-        <?php endif; ?>
+
+        <?php require __DIR__ . '/../Components/info-messages.php'; ?>
         <?php require __DIR__ . '/../Components/footer.php'; ?>
     </div>
 </body>
