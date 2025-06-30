@@ -13,7 +13,7 @@ class RestaurantController
     public function index()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->handleForm();
+            $this->handlePost();
             return;
         }
 
@@ -28,7 +28,7 @@ class RestaurantController
         require __DIR__ . '/../View/Restaurant/index.php';
     }
 
-    public function handleForm()
+    public function handlePost()
     {
         $action = $_POST['action'] ?? '';
         $name = $_POST['name'] ?? '';
@@ -166,7 +166,7 @@ class RestaurantController
 
         $this->raiseWrongPasswordError($pass, $restaurant['password']);
 
-        // RestaurantModel::deleteRestaurant($this->pdo, $restaurant['pk']);
+        RestaurantModel::deleteRestaurant($this->pdo, $restaurant['pk']);
 
         setcookie("restaurant_pk", null);
         header('Location: /?success=deleted');
